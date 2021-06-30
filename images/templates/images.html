@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+
+    {% load static %}
+    <!-- <link rel="stylesheet" href="{% static 'style.css' %}?{% now 'U' %}" /> -->
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="jumbotron text-center" style="margin-bottom: 0">
+      <div>
+        <div>
+          <h1>The App</h1>
+          <h2>
+            Welcome {{current_user.first_name}} {{current_user.last_name}}
+          </h2>
+          <a class="nav-link color_w" href="/logout">Log Out</a>
+        </div>
+
+        {% if not current_user.profile.id %}
+        <div>
+          <img
+            src="{% static 'images/default3.png' %}"
+            class="rounded-circle"
+            alt="Avatar"
+            style="width: 150px"
+          />
+          <h4>Add Your Profile Picture</h4>
+          <form action="survey" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="user_img" class="form-control" />
+            <button type="submit">Upload Image</button>
+          </form>
+        </div>
+
+        <div class="error">
+          {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+
+        {% endif %}
+      </div>
+
+      {% if current_user.profile.id %}
+      <img
+        class="rounded-circle"
+        style="width: 150px"
+        src="{{current_user.profile.profile_image.url}}"
+        alt=""
+      />
+      {% endif %}
+      <br />
+      <button>
+        <a href="/delete_user/{{current_user.id}}">Delete User</a>
+      </button>
+      <button>
+        <a href="/edit_img/{{ current_user.profile.id }}">Change Image</a>
+      </button>
+      <!-- <button>
+        <a href="/reset_img/{{ current_user.profile.id }}">Reset Image</a>
+      </button> -->
+      <h6>Current User Id: {{ current_user.id }}</h6>
+      <h6>Current User Profile Id: {{ current_user.profile.id }}</h6>
+    </div>
+  </body>
+</html>
