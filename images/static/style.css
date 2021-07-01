@@ -30,6 +30,11 @@ body {
   width: 200px;
 }
 
+.h1_style {
+  color: yellow;
+  margin-top: 20px;
+}
+
 img {
   /* width: 50px;
   height: 50px;
